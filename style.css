@@ -1,0 +1,109 @@
+@import url(https://fonts.googleapis.com/css?family=Amarante:400,700);
+
+body {
+  background-image: url(https://img.freepik.com/free-photo/assortment-cinema-elements-red-background-with-copy-space_23-2148457848.jpg?w=900&t=st=1687788637~exp=1687789237~hmac=ba73a90262f52642748ac4e5eccc28ac4a094debc2d6c11f5edda1e61269c496);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  font-family: 'Amarante', serif;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.logo a {
+  color: #fff;
+  font-size: 24px;
+  text-decoration: none;
+  font-family: 'Amarante', serif;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+#search-input {
+  padding: 5px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: none;
+  font-family: 'Amarante', serif;
+}
+
+#search-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-family: 'Amarante', serif;
+}
+
+#clear-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-family: 'Amarante', serif;
+}
+
+#fetch-button {
+  background-color: #008CBA;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 5px;
+  cursor: pointer;
+  font-family: 'Amarante', serif;
+}
+
+.movie-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.movie-card {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  margin: 10px;
+  width: 200px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-image {
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.movie-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px;
+}
+
+.movie-description {
+  font-size: 14px;
+  margin: 10px;
+}
