@@ -59,7 +59,7 @@ nav {
   font-family: 'Amarante', serif;
 }
 
-#fetch-button {
+#Movies{
   background-color: #008CBA;
   color: white;
   border: none;
@@ -69,6 +69,37 @@ nav {
   font-family: 'Amarante', serif;
 }
 
+#series {
+  background-color: #FF9800;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-family: 'Amarante', serif;
+}
+
+#box-office {
+  background-color: #E91E63;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-family: 'Amarante', serif;
+}
+#coming-soon {
+  background-color: #25109b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-family: 'Amarante', serif;
+}
 .movie-row {
   display: flex;
   flex-wrap: wrap;

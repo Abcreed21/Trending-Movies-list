@@ -1,33 +1,34 @@
-function getMovie() {
-  fetch('https://imdb-api.com/en/API/BoxOffice/k_6lhii0n1')
-      .then((response) => response.json())
-      .then((data) => {
-          const movieRow = document.getElementById('movie-row');
-          movieRow.innerHTML = '';
-          for (let i = 0; i < data.items.length; i++) {
-              const movieCard = document.createElement('div');
-              movieCard.classList.add('movie-card');
+function getMovie(apiUrl) {
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      const movieRow = document.getElementById('movie-row');
+      movieRow.innerHTML = '';
+      for (let i = 0; i < data.items.length; i++) {
+        const movieCard = document.createElement('div');
+        movieCard.classList.add('movie-card');
 
-              const movieImage = document.createElement('img');
-              movieImage.classList.add('movie-image');
-              movieImage.src = data.items[i].image;
+        const movieImage = document.createElement('img');
+        movieImage.classList.add('movie-image');
+        movieImage.src = data.items[i].image;
 
-              const movieTitle = document.createElement('div');
-              movieTitle.classList.add('movie-title');
-              movieTitle.textContent = data.items[i].title;
+        const movieTitle = document.createElement('div');
+        movieTitle.classList.add('movie-title');
+        movieTitle.textContent = data.items[i].title;
 
-              const movieDescription = document.createElement('div');
-              movieDescription.classList.add('movie-description');
-              movieDescription.textContent = data.items[i].description;
+        const movieDescription = document.createElement('div');
+        movieDescription.classList.add('movie-description');
+        movieDescription.textContent = data.items[i].description;
 
-              movieCard.appendChild(movieImage);
-              movieCard.appendChild(movieTitle);
-              movieCard.appendChild(movieDescription);
-              movieRow.appendChild(movieCard);
-          }
-      }).catch((error) => {
-          console.log('Error:', error);
-      });
+        movieCard.appendChild(movieImage);
+        movieCard.appendChild(movieTitle);
+        movieCard.appendChild(movieDescription);
+        movieRow.appendChild(movieCard);
+      }
+    })
+    .catch((error) => {
+      console.log('Error:', error);
+    });
 }
 
 function searchMovie() {
@@ -45,8 +46,29 @@ function searchMovie() {
   });
 }
 
-const fetchButton = document.getElementById('fetch-button');
-fetchButton.addEventListener('click', getMovie);
+const MoviesButton = document.getElementById('Movies');
+MoviesButton.addEventListener('click', () => {
+  const apiUrl = 'https://imdb-api.com/en/API/Top250Movies/k_6lhii0n1';
+  getMovie(apiUrl);
+});
+
+const listSeriesButton = document.getElementById('series');
+listSeriesButton.addEventListener('click', () => {
+  const apiUrl = 'https://imdb-api.com/en/API/MostPopularTVs/k_6lhii0n1';
+  getMovie(apiUrl);
+});
+
+const boxOfficeButton = document.getElementById('box-office');
+boxOfficeButton.addEventListener('click', () => {
+  const apiUrl = 'https://imdb-api.com/en/API/BoxOffice/k_6lhii0n1';
+  getMovie(apiUrl);
+});
+
+const ComingSoonButton = document.getElementById('coming-soon');
+ComingSoonButton.addEventListener('click', () => {
+  const apiUrl = 'https://imdb-api.com/en/API/ComingSoon/k_6lhii0n1';
+  getMovie(apiUrl);
+});
 
 const searchButton = document.getElementById('search-button');
 searchButton.addEventListener('click', searchMovie);
@@ -58,3 +80,9 @@ clearButton.addEventListener('click', () => {
   searchInput.value = '';
   getMovie();
 });
+
+// Append the new buttons to the document
+const buttonContainer = document.getElementById('button-container');
+buttonContainer.appendChild(listSeriesButton);
+buttonContainer.appendChild(boxOfficeButton);
+buttonContainer.appendChild(boxOfficeButton);
