@@ -15,3 +15,7 @@ The getMovie() function fetches data from the IMDB API and creates movie cards b
 ## Limitations
 
 The only downside of this code is that it uses a specific API address that may have limited use. If the API address becomes unavailable or changes, the code may not work properly.
+
+
+
+

@@ -1,88 +1,94 @@
-function getMovie(apiUrl) {
-  fetch(apiUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      const movieRow = document.getElementById('movie-row');
-      movieRow.innerHTML = '';
-      for (let i = 0; i < data.items.length; i++) {
-        const movieCard = document.createElement('div');
-        movieCard.classList.add('movie-card');
+// Titles: https://omdbapi.com/?s=thor&page=1&apikey=ea8bd4d3
+// details: http://www.omdbapi.com/?i=tt3896198&apikey=ea8bd4d3
 
-        const movieImage = document.createElement('img');
-        movieImage.classList.add('movie-image');
-        movieImage.src = data.items[i].image;
+const movieSearchBox = document.getElementById('movie-search-box');
+const searchList = document.getElementById('search-list');
+const resultGrid = document.getElementById('result-grid');
 
-        const movieTitle = document.createElement('div');
-        movieTitle.classList.add('movie-title');
-        movieTitle.textContent = data.items[i].title;
+// load movies from API
+async function loadMovies(searchTerm){
+    const URL = `https://omdbapi.com/?s=${searchTerm}&page=1&apikey=ea8bd4d3`;
+    const res = await fetch(`${URL}`);
+    const data = await res.json();
+    // console.log(data.Search);
+    if(data.Response == "True") displayMovieList(data.Search);
+}
 
-        const movieDescription = document.createElement('div');
-        movieDescription.classList.add('movie-description');
-        movieDescription.textContent = data.items[i].description;
+function findMovies(){
+    let searchTerm = (movieSearchBox.value).trim();
+    if(searchTerm.length > 0){
+        searchList.classList.remove('hide-search-list');
+        loadMovies(searchTerm);
+    } else {
+        searchList.classList.add('hide-search-list');
+    }
+}
 
-        movieCard.appendChild(movieImage);
-        movieCard.appendChild(movieTitle);
-        movieCard.appendChild(movieDescription);
-        movieRow.appendChild(movieCard);
-      }
-    })
-    .catch((error) => {
-      console.log('Error:', error);
+function displayMovieList(movies){
+    searchList.innerHTML = "";
+    for(let idx = 0; idx < movies.length; idx++){
+        let movieListItem = document.createElement('div');
+        movieListItem.dataset.id = movies[idx].imdbID; // setting movie id in  data-id
+        movieListItem.classList.add('search-list-item');
+        if(movies[idx].Poster != "N/A")
+            moviePoster = movies[idx].Poster;
+        else 
+            moviePoster = "image_not_found.png";
+
+        movieListItem.innerHTML = `
+        <div class = "search-item-thumbnail">
+            <img src = "${moviePoster}">
+        </div>
+        <div class = "search-item-info">
+            <h3>${movies[idx].Title}</h3>
+            <p>${movies[idx].Year}</p>
+        </div>
+        `;
+        searchList.appendChild(movieListItem);
+    }
+    loadMovieDetails();
+}
+
+function loadMovieDetails(){
+    const searchListMovies = searchList.querySelectorAll('.search-list-item');
+    searchListMovies.forEach(movie => {
+        movie.addEventListener('click', async () => {
+            // console.log(movie.dataset.id);
+            searchList.classList.add('hide-search-list');
+            movieSearchBox.value = "";
+            const result = await fetch(`http://www.omdbapi.com/?i=${movie.dataset.id}&apikey=ea8bd4d3`);
+            const movieDetails = await result.json();
+            // console.log(movieDetails);
+            displayMovieDetails(movieDetails);
+        });
     });
 }
 
-function searchMovie() {
-  const searchInput = document.getElementById('search-input');
-  const searchTerm = searchInput.value.toLowerCase();
-  const movieCards = document.querySelectorAll('.movie-card');
-
-  movieCards.forEach((movieCard) => {
-    const movieTitle = movieCard.querySelector('.movie-title').textContent.toLowerCase();
-    if (movieTitle.includes(searchTerm)) {
-      movieCard.style.display = 'block';
-    } else {
-      movieCard.style.display = 'none';
-    }
-  });
+function displayMovieDetails(details){
+    resultGrid.innerHTML = `
+    <div class = "movie-poster">
+        <img src = "${(details.Poster != "N/A") ? details.Poster : "https://www.gmt-sales.com/wp-content/uploads/2015/10/no-image-found.jpg"}" alt = "movie poster">
+    </div>
+    <div class = "movie-info">
+        <h3 class = "movie-title">${details.Title}</h3>
+        <ul class = "movie-misc-info">
+            <li class = "year">Year: ${details.Year}</li>
+            <li class = "rated">Ratings: ${details.Rated}</li>
+            <li class = "released">Released: ${details.Released}</li>
+        </ul>
+        <p class = "genre"><b>Genre:</b> ${details.Genre}</p>
+        <p class = "writer"><b>Writer:</b> ${details.Writer}</p>
+        <p class = "actors"><b>Actors: </b>${details.Actors}</p>
+        <p class = "plot"><b>Plot:</b> ${details.Plot}</p>
+        <p class = "language"><b>Language:</b> ${details.Language}</p>
+        <p class = "awards"><b><i class = "fas fa-award"></i></b> ${details.Awards}</p>
+    </div>
+    `;
 }
 
-const MoviesButton = document.getElementById('Movies');
-MoviesButton.addEventListener('click', () => {
-  const apiUrl = 'https://imdb-api.com/en/API/Top250Movies/k_6lhii0n1';
-  getMovie(apiUrl);
+
+window.addEventListener('click', (event) => {
+    if(event.target.className != "form-control"){
+        searchList.classList.add('hide-search-list');
+    }
 });
-
-const listSeriesButton = document.getElementById('series');
-listSeriesButton.addEventListener('click', () => {
-  const apiUrl = 'https://imdb-api.com/en/API/MostPopularTVs/k_6lhii0n1';
-  getMovie(apiUrl);
-});
-
-const boxOfficeButton = document.getElementById('box-office');
-boxOfficeButton.addEventListener('click', () => {
-  const apiUrl = 'https://imdb-api.com/en/API/BoxOffice/k_6lhii0n1';
-  getMovie(apiUrl);
-});
-
-const ComingSoonButton = document.getElementById('coming-soon');
-ComingSoonButton.addEventListener('click', () => {
-  const apiUrl = 'https://imdb-api.com/en/API/ComingSoon/k_6lhii0n1';
-  getMovie(apiUrl);
-});
-
-const searchButton = document.getElementById('search-button');
-searchButton.addEventListener('click', searchMovie);
-
-const clearButton = document.getElementById('clear-button');
-const searchInput = document.getElementById('search-input');
-
-clearButton.addEventListener('click', () => {
-  searchInput.value = '';
-  getMovie();
-});
-
-// Append the new buttons to the document
-const buttonContainer = document.getElementById('button-container');
-buttonContainer.appendChild(listSeriesButton);
-buttonContainer.appendChild(boxOfficeButton);
-buttonContainer.appendChild(boxOfficeButton);
